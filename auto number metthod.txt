@@ -1,0 +1,37 @@
+ public void autoNumber()
+	{
+		try
+		{
+			Connection konek = Koneksi.getKoneksi();
+			Statement state = konek.createStatement();
+			String query = "SELECT MAX(right(ID,2)) AS no FROM pelanggan";
+			
+			ResultSet rs = state.executeQuery(query);
+			while(rs.next())
+			{
+				if(rs.first() == false)
+				{
+					txtID.setText("P001");
+				}
+				else
+				{
+					rs.last();
+					int noID = rs.getInt(1) + 1;
+					String no = String.valueOf(noID);
+					int noLong = no.length();
+					for(int a=0;a<2-noLong;a++)
+					{
+						no = "00" + no;
+					}
+					txtID.setText("P" + no);
+				}
+					
+			}
+			rs.close();
+			state.close();
+		}
+		catch(Exception ex)
+		{
+			System.out.println(ex);
+		}
+	}
